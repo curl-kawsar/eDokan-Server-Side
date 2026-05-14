@@ -8,3 +8,4 @@ dist/
 *.log
 bun.lockb
 drizzle/.snapshots
+api/_app.mjs

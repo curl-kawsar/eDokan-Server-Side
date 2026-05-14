@@ -7,13 +7,15 @@
   "scripts": {
     "dev": "bun --watch run src/index.ts",
     "start": "bun run src/index.ts",
-    "build": "bun build src/index.ts --target=bun --outdir=dist",
+    "build:bun": "bun build src/index.ts --target=bun --outdir=dist",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "db:seed": "bun run src/db/seed.ts",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "build": "node scripts/vercel-bundle.mjs",
+    "vercel-build": "node scripts/vercel-bundle.mjs"
   },
   "dependencies": {
     "@hono/zod-validator": "^0.4.2",
@@ -32,6 +34,7 @@
     "@types/bun": "^1.1.14",
     "@types/node": "^22.10.5",
     "drizzle-kit": "^0.30.1",
+    "esbuild": "^0.25.0",
     "typescript": "^5.7.2"
   }
 }
