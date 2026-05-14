@@ -42,6 +42,7 @@ app.get("/", (c) =>
 );
 
 app.get("/health", (c) => c.json({ status: "healthy", time: new Date().toISOString() }));
+app.get("/api/health", (c) => c.json({ status: "healthy", time: new Date().toISOString() }));
 
 const api = new Hono();
 api.route("/auth", authRoutes);
