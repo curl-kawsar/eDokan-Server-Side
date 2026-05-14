@@ -19,7 +19,7 @@ function resolveWithExtensions(basePath) {
   return null;
 }
 
-/** Resolves tsconfig-style `@/…` imports to `./src/…` for Vercel (Node has no path aliases). */
+/** Resolves tsconfig-style `@/…` imports to `./src/…` (Node on Vercel has no TS path aliases). */
 const aliasAtPlugin = {
   name: "alias-at-slash",
   setup(build) {
@@ -35,16 +35,19 @@ const aliasAtPlugin = {
   },
 };
 
+const entry = path.join(root, "api", "vercel-entry.ts");
+const outfile = path.join(root, "api", "[...route].mjs");
+
 await esbuild.build({
-  entryPoints: [path.join(root, "src", "app.ts")],
+  entryPoints: [entry],
   bundle: true,
   platform: "node",
   target: "node20",
   format: "esm",
-  outfile: path.join(root, "api", "_app.mjs"),
+  outfile,
   plugins: [aliasAtPlugin],
   packages: "external",
   logLevel: "info",
 });
 
-console.log("✓ Bundled src/app.ts → api/_app.mjs (@/ → src/, node_modules external)");
+console.log(`✓ Bundled ${path.relative(root, entry)} → ${path.relative(root, outfile)}`);

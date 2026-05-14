@@ -1,6 +1,5 @@
 import { handle } from "hono/vercel";
-// Bundled on deploy: `npm run vercel-build` resolves `@/` path aliases for Node runtime
-import { app } from "./_app.mjs";
+import { app } from "../src/app";
 
 const handler = handle(app);
 
