@@ -1,23 +1,22 @@
 {
   "name": "e-hiseb-backend",
   "version": "1.0.0",
-  "description": "ই-হিসেব - Workshop Management System Backend (Hono + Bun + Drizzle + Neon)",
+  "description": "ই-হিসেব — Workshop API (pure Hono + Node + Drizzle + Neon)",
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
-    "dev": "bun --watch run src/index.ts",
-    "start": "bun run src/index.ts",
-    "build:bun": "bun build src/index.ts --target=bun --outdir=dist",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/server.mjs",
+    "build": "node scripts/build.mjs",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "db:seed": "bun run src/db/seed.ts",
-    "lint": "tsc --noEmit",
-    "build": "node scripts/vercel-bundle.mjs",
-    "vercel-build": "node scripts/vercel-bundle.mjs"
+    "db:seed": "tsx src/db/seed.ts",
+    "lint": "tsc --noEmit"
   },
   "dependencies": {
+    "@hono/node-server": "^1.13.8",
     "@hono/zod-validator": "^0.4.2",
     "@neondatabase/serverless": "^0.10.4",
     "bcryptjs": "^2.4.3",
@@ -31,10 +30,10 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
-    "@types/bun": "^1.1.14",
     "@types/node": "^22.10.5",
     "drizzle-kit": "^0.30.1",
     "esbuild": "^0.25.0",
+    "tsx": "^4.19.2",
     "typescript": "^5.7.2"
   }
 }

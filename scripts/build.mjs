@@ -1,3 +1,7 @@
+/**
+ * Production bundle for VPS: single ESM file, resolves `@/` → `src/`, external node_modules.
+ * Run: node scripts/build.mjs
+ */
 import * as esbuild from "esbuild";
 import fs from "node:fs";
 import path from "node:path";
@@ -19,7 +23,6 @@ function resolveWithExtensions(basePath) {
   return null;
 }
 
-/** Resolves tsconfig-style `@/…` imports to `./src/…` (Node on Vercel has no TS path aliases). */
 const aliasAtPlugin = {
   name: "alias-at-slash",
   setup(build) {
@@ -28,18 +31,19 @@ const aliasAtPlugin = {
       const base = path.join(root, "src", rel);
       const resolved = resolveWithExtensions(base);
       if (!resolved) {
-        throw new Error(`[alias-at-slash] Cannot resolve import: ${args.path}`);
+        throw new Error(`[alias-at-slash] Cannot resolve: ${args.path}`);
       }
       return { path: resolved };
     });
   },
 };
 
-const entry = path.join(root, "api", "vercel-entry.ts");
-const outfile = path.join(root, "api", "[...route].mjs");
+const outDir = path.join(root, "dist");
+fs.mkdirSync(outDir, { recursive: true });
+const outfile = path.join(outDir, "server.mjs");
 
 await esbuild.build({
-  entryPoints: [entry],
+  entryPoints: [path.join(root, "src", "index.ts")],
   bundle: true,
   platform: "node",
   target: "node20",
@@ -50,4 +54,4 @@ await esbuild.build({
   logLevel: "info",
 });
 
-console.log(`✓ Bundled ${path.relative(root, entry)} → ${path.relative(root, outfile)}`);
+console.log(`✓ Built ${path.relative(root, outfile)}`);
