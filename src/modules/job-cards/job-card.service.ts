@@ -3,6 +3,7 @@ import { db } from "@/config/db";
 import { jobCards, jobCardItems } from "@/db/schema/job-cards";
 import { parts } from "@/db/schema/parts";
 import { NotFoundError } from "@/utils/errors";
+import { listActivitiesForEntity } from "@/modules/activity-logs/activity-log.service";
 import type { PaginationParams } from "@/utils/pagination";
 import { getOffset } from "@/utils/pagination";
 import { generateDocumentNumber } from "@/utils/sequence";
@@ -70,7 +71,8 @@ export const jobCardService = {
       },
     });
     if (!jc) throw new NotFoundError("জব কার্ড");
-    return formatJobCard(jc);
+    const activities = await listActivitiesForEntity("job_card", id);
+    return { ...formatJobCard(jc), activities };
   },
 
   async create(input: CreateJobCardInput) {

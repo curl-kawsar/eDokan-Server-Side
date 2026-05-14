@@ -2,6 +2,7 @@ import { and, asc, desc, eq, ilike, or, sql } from "drizzle-orm";
 import { db } from "@/config/db";
 import { invoices, payments } from "@/db/schema/invoices";
 import { NotFoundError, BadRequestError } from "@/utils/errors";
+import { listActivitiesForEntity } from "@/modules/activity-logs/activity-log.service";
 import type { PaginationParams } from "@/utils/pagination";
 import { getOffset } from "@/utils/pagination";
 import { generateDocumentNumber } from "@/utils/sequence";
@@ -64,7 +65,8 @@ export const invoiceService = {
       },
     });
     if (!inv) throw new NotFoundError("ইনভয়েস");
-    return inv;
+    const activities = await listActivitiesForEntity("invoice", id);
+    return { ...inv, activities };
   },
 
   async create(input: CreateInvoiceInput) {

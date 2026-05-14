@@ -6,4 +6,5 @@ export * from "./parts";
 export * from "./job-cards";
 export * from "./invoices";
 export * from "./expenses";
+export * from "./activity-logs";
 export * from "./relations";

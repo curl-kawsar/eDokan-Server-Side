@@ -6,6 +6,7 @@ import { parts } from "./parts";
 import { jobCards, jobCardItems } from "./job-cards";
 import { invoices, payments } from "./invoices";
 import { users } from "./users";
+import { activityLogs } from "./activity-logs";
 
 export const customersRelations = relations(customers, ({ many }) => ({
   vehicles: many(vehicles),
@@ -48,4 +49,12 @@ export const invoicesRelations = relations(invoices, ({ one, many }) => ({
 
 export const paymentsRelations = relations(payments, ({ one }) => ({
   invoice: one(invoices, { fields: [payments.invoiceId], references: [invoices.id] }),
+}));
+
+export const usersRelations = relations(users, ({ many }) => ({
+  activityLogs: many(activityLogs),
+}));
+
+export const activityLogsRelations = relations(activityLogs, ({ one }) => ({
+  user: one(users, { fields: [activityLogs.userId], references: [users.id] }),
 }));
